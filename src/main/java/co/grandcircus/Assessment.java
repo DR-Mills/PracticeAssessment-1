@@ -4,65 +4,61 @@ import java.util.Scanner;
 
 public class Assessment {
 
-	static int totalBurgersOrdered = 0;
-	static int totalSodasOrdered = 0;
-	static boolean orderInProgress = true;	
-	
+	static int totalBurgers = 0;
+	static int totalSodas = 0;
+	static boolean orderInProgress = true;
+
 	public static void main(String[] args) {
-		
-		double orderSubTotal = 0.00;
+
 		Scanner scnr = new Scanner(System.in);
 
 		while (orderInProgress) {
-			int orderSelection = takeCustomerOrder(scnr);
-
-			orderUpdate(orderSelection);
+			updateItemsOrdered(printMenuTakeOrder(scnr));
 		}
-		
-		orderSubTotal = calculateSubtotal(totalBurgersOrdered, totalSodasOrdered);
-		
-		System.out.println("Subtotal: $" + orderSubTotal);
-		
-		addTaxDisplayTotal(orderSubTotal);
-		System.out.println(printStars("Burgers", totalBurgersOrdered));
-		System.out.println(printStars("Sodas", totalSodasOrdered));
+		printSubTotal("Subtotal", calculateSubTotal(totalBurgers, totalSodas));
+		addTaxDisplayTotal(calculateSubTotal(totalBurgers, totalSodas));
+		printItemQuantity("Burgers", totalBurgers);
+		printItemQuantity("Sodas", totalSodas);
 		
 		scnr.close();
 	}
 
 	// Methods
-	private static int takeCustomerOrder(Scanner scnr) {
-		System.out.println("1. Burger\n" + "2. Soda\n" + "3. Exit\n" + "Select an option: ");
-		int orderSelection = scnr.nextInt();
-		return orderSelection;
+	public static int printMenuTakeOrder(Scanner scnr) {
+		System.out.print("1. Burger\n" + "2. Soda\n" + "3. Exit\n" + "Select an Option: ");
+		return scnr.nextInt();
 	}
 
-	public static double calculateSubtotal(int b, int s) {
-		return (b * 2.50) + (s * 1.25);
-	}
-
-	public static void addTaxDisplayTotal(double t) {
-		double total = t * 1.07;
-		System.out.println("Total: $" + total);
-	}
-
-	public static String printStars(String word, int a) {
-		String starBanner = "";
-		for (int i = 0; i < a; i++) {
-			starBanner = starBanner.concat("*");
-		}
-		return word + ": " + starBanner;
-	}
-	
-	public static void orderUpdate(int a) {
+	public static void updateItemsOrdered(int a) {
 		if (a == 1) {
-			totalBurgersOrdered++;
+			totalBurgers++;
 		} else if (a == 2) {
-			totalSodasOrdered++;
+			totalSodas++;
 		} else if (a == 3) {
 			orderInProgress = false;
 		} else {
 			System.out.println("Sorry I didn't understand, let's try again.");
 		}
+	}
+
+	public static double calculateSubTotal(int a, int b) {
+		return (a * 2.5) + (b * 1.25);
+	}
+
+	public static void printSubTotal(String str, double d) {
+		System.out.println(str + ": $" + d);
+	}
+
+	public static void addTaxDisplayTotal(double d) {
+		double totalWithTax = d + (d * .07);
+		System.out.println("Total: $" + totalWithTax);
+	}
+
+	public static void printItemQuantity(String str, int a) {
+		System.out.print(str + ": ");
+		for (int i = 0; i < a; i++) {
+			System.out.print("*");
+		}
+		System.out.println();
 	}
 }
