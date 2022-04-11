@@ -4,29 +4,21 @@ import java.util.Scanner;
 
 public class Assessment {
 
+	static int totalBurgersOrdered = 0;
+	static int totalSodasOrdered = 0;
+	static boolean orderInProgress = true;	
+	
 	public static void main(String[] args) {
-
+		
+		double orderSubTotal = 0.00;
 		Scanner scnr = new Scanner(System.in);
 
-		boolean orderInProgress = true;
-		int totalBurgersOrdered = 0;
-		int totalSodasOrdered = 0;
-		double orderSubTotal = 0.00;
-
 		while (orderInProgress) {
-			System.out.println("1. Burger\n" + "2. Soda\n" + "3. Exit\n" + "Select an option: ");
-			int orderSelection = scnr.nextInt();
+			int orderSelection = takeCustomerOrder(scnr);
 
-			if (orderSelection == 1) {
-				totalBurgersOrdered++;
-			} else if (orderSelection == 2) {
-				totalSodasOrdered++;
-			} else if (orderSelection == 3) {
-				orderInProgress = false;
-			} else {
-				System.out.println("Sorry I didn't understand, let's try again.");
-			}
+			orderUpdate(orderSelection);
 		}
+		
 		orderSubTotal = calculateSubtotal(totalBurgersOrdered, totalSodasOrdered);
 		
 		System.out.println("Subtotal: $" + orderSubTotal);
@@ -39,6 +31,11 @@ public class Assessment {
 	}
 
 	// Methods
+	private static int takeCustomerOrder(Scanner scnr) {
+		System.out.println("1. Burger\n" + "2. Soda\n" + "3. Exit\n" + "Select an option: ");
+		int orderSelection = scnr.nextInt();
+		return orderSelection;
+	}
 
 	public static double calculateSubtotal(int b, int s) {
 		return (b * 2.50) + (s * 1.25);
@@ -55,5 +52,17 @@ public class Assessment {
 			starBanner = starBanner.concat("*");
 		}
 		return word + ": " + starBanner;
+	}
+	
+	public static void orderUpdate(int a) {
+		if (a == 1) {
+			totalBurgersOrdered++;
+		} else if (a == 2) {
+			totalSodasOrdered++;
+		} else if (a == 3) {
+			orderInProgress = false;
+		} else {
+			System.out.println("Sorry I didn't understand, let's try again.");
+		}
 	}
 }
